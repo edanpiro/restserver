@@ -9,5 +9,16 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
+      - name: Chekout
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+
+      - name: run maven
+        run: mvn clean package -DskipTests
+      
       - name: test-step1
         run: echo "hola mundo"
