@@ -20,6 +20,12 @@ jobs:
 
       - name: run maven
         run: mvn clean package -DskipTests
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Docker Build
+        run: docker build -t demo .
       
       - name: test-step1
         run: echo "hola mundo"
