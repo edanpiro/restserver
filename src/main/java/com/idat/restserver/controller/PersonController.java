@@ -53,7 +53,11 @@ public class PersonController {
                 person.setName(updatePerson.getName());
                 person.setAge(updatePerson.getAge());
                 personRepository.save(person);
-                return Response.ok(person, MediaType.APPLICATION_JSON).build();
+                String responseMessage = "{\"message\":\"Persona actualizada correctamente\"}";
+                return Response.status(Response.Status.OK)
+                        .entity(responseMessage)
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
             }
             return Response.status(Response.Status.NOT_FOUND).entity("Persona no encontrada").build();
         } catch (JsonProcessingException e) {
@@ -70,11 +74,15 @@ public class PersonController {
         Person person = personRepository.findById(id).orElse(null);
         if (person != null) {
             personRepository.delete(person);
-            return Response.ok(person, MediaType.APPLICATION_JSON).build();
+            String responseMessage = "{\"message\":\"Persona eliminada correctamente\"}";
+            return Response.status(Response.Status.NO_CONTENT)
+                    .entity(responseMessage)
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
         }
         return Response.status(Response.Status.NOT_FOUND)
-                .entity("Persona no encontrada")
-                .type(MediaType.TEXT_PLAIN)
+                .entity("{\"message\":\"Persona no encontrada\"}")
+                .type(MediaType.APPLICATION_JSON)
                 .build();
     }
 
