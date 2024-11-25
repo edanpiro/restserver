@@ -41,6 +41,27 @@ public class PersonController {
         }
     }
 
+    @GET
+    @Path("/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonByName(@PathParam("name") String name) {
+        Person person = personRepository.findByName(name);
+        if (person != null) {
+            try {
+                String json = objectMapper.writeValueAsString(person);
+                return Response.ok(json, MediaType.APPLICATION_JSON).build();
+            } catch (JsonProcessingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("Error al convertir a JSON")
+                        .build();
+            }
+        }
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("{\"message\":\"Persona no encontrada\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
